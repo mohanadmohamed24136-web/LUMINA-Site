@@ -6,7 +6,11 @@ const multer = require('multer');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = process.env.STRIPE_SECRET_KEY ? require('stripe')(process.env.STRIPE_SECRET_KEY) : null;
+
+if (!stripe) {
+    console.warn('STRIPE_SECRET_KEY is missing. Stripe features will be disabled.');
+}
 
 // Master Admin Access List
 const MASTER_ADMINS = [
