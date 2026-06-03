@@ -144,6 +144,30 @@ async function initializeDatabase() {
         for (const sql of tables) {
             await connection.execute(sql);
         }
+
+        // --- NEW: Schema Migration for Users Table ---
+        try {
+            console.log('--- Checking for Missing Columns in Users Table ---');
+            const [columns] = await connection.execute('SHOW COLUMNS FROM users');
+            const columnNames = columns.map(c => c.Field);
+
+            if (!columnNames.includes('weeklyUploadCount')) {
+                console.log('Adding weeklyUploadCount column...');
+                await connection.execute('ALTER TABLE users ADD COLUMN weeklyUploadCount INT DEFAULT 0');
+            }
+            if (!columnNames.includes('lastWeeklyReset')) {
+                console.log('Adding lastWeeklyReset column...');
+                await connection.execute('ALTER TABLE users ADD COLUMN lastWeeklyReset DATETIME DEFAULT CURRENT_TIMESTAMP');
+            }
+            if (!columnNames.includes('stripe_customer_id')) {
+                console.log('Adding stripe_customer_id column...');
+                await connection.execute('ALTER TABLE users ADD COLUMN stripe_customer_id VARCHAR(255)');
+            }
+            console.log('--- Schema Migration Completed ---');
+        } catch (migrationErr) {
+            console.error('Schema Migration Error:', migrationErr);
+        }
+
         console.log('--- Database Tables Initialized Successfully ---');
     } catch (err) {
         console.error('Database Initialization Error:', err);
