@@ -1,0 +1,1390 @@
+:root {
+    --cyan: #00F0FF;
+    --magenta: #FF00AA;
+    --gold: #FFD700;
+    --dark-bg: #050505;
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-bg: rgba(10, 10, 10, 0.7);
+    --neon-glow: 0 0 30px rgba(0, 240, 255, 0.2);
+    --surface: rgba(255, 255, 255, 0.03);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: white;
+    overflow-x: hidden;
+    letter-spacing: -0.01em;
+    min-height: 100vh;
+}
+
+/* --- Core Layout & Background --- */
+.bg-mesh {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 0, 170, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%);
+    animation: mesh-flow 30s linear infinite;
+}
+
+@keyframes mesh-flow {
+    0% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.1) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); }
+}
+
+/* --- UI Elements --- */
+.glass {
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+}
+
+.glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Gradients */
+/* --- Global UI Polishing --- */
+.btn-premium {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-premium::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.5s;
+    pointer-events: none;
+}
+
+.btn-premium:hover::after {
+    opacity: 1;
+}
+
+/* Custom Scrollbar for Premium Feel */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan);
+}
+
+/* Text Gradient Utilities */
+.text-gradient-cyan {
+    background: linear-gradient(to right, var(--cyan), #fff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-magenta {
+    background: linear-gradient(to right, var(--magenta), #fff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-gold {
+    background: linear-gradient(to right, var(--gold), #fff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.btn-premium:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 20px 40px -10px rgba(0, 240, 255, 0.3);
+}
+
+.product-card {
+    transition: all 0.6s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(0, 240, 255, 0.3) !important;
+}
+
+.product-card .image-zoom {
+    transition: transform 1.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.product-card:hover .image-zoom {
+    transform: scale(1.1);
+}
+
+/* Forms */
+input, textarea, select {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: white !important;
+    transition: all 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
+}
+
+input:focus, textarea:focus {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: var(--cyan) !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1) !important;
+    outline: none;
+}
+
+/* --- Utilities --- */
+.rtl { direction: rtl; }
+.ltr { direction: ltr; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: var(--cyan);
+    border-radius: 10px;
+}
+
+/* --- Animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animation Utilities */
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 0px rgba(0, 240, 255, 0); border-color: rgba(255, 255, 255, 0.05); }
+    50% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.2); border-color: var(--cyan); }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 1s ease-in-out infinite;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    animation: marquee 30s linear infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(12deg); }
+    50% { transform: translateY(-20px) rotate(15deg); }
+}
+
+.animate-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float-delayed {
+    0%, 100% { transform: translateY(0) rotate(-12deg); }
+    50% { transform: translateY(20px) rotate(-15deg); }
+}
+
+.animate-float-delayed {
+    animation: float-delayed 8s ease-in-out infinite;
+}
+
+@keyframes slow-zoom {
+    0% { transform: scale(1.1); }
+    100% { transform: scale(1.25); }
+}
+
+.animate-slow-zoom {
+    animation: slow-zoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.2); }
+    50% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.4); }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* --- Scroll Reveal --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1.2s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Responsive & Mobile Fixes --- */
+@media (max-width: 768px) {
+    .glass { backdrop-filter: blur(10px); }
+    
+    .rounded-\[3\.5rem\], .rounded-\[4rem\], .rounded-\[5rem\], .rounded-\[6rem\] {
+        border-radius: 1.5rem !important;
+    }
+    
+    .text-7xl, .text-8xl, .text-9xl, .text-\[10rem\], .text-\[13rem\] {
+        font-size: 2.5rem !important;
+        line-height: 1.1 !important;
+    }
+
+    .container {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Navbar Mobile Optimization */
+    nav .container {
+        gap: 0.5rem !important;
+    }
+
+    nav .flex.items-center.gap-1\.5 {
+        gap: 0.25rem !important;
+    }
+
+    nav button.glass, nav a.glass {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+    }
+
+    /* Fix Portal Grids & Button Disappearance */
+    .grid-cols-12 {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 1.5rem !important;
+    }
+
+    /* Force Portal Sidebars to be vertical on mobile */
+    aside .glass {
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        padding: 1.5rem !important;
+    }
+
+    aside .glass .flex.flex-col.items-center {
+        width: 100% !important;
+    }
+
+    aside .glass .space-y-3.w-full,
+    aside .glass nav.w-full {
+        width: 100% !important;
+    }
+
+    /* Ensure sidebar nav buttons stack vertically on mobile */
+    aside nav, aside nav ul {
+        width: 100% !important;
+        overflow: visible !important;
+    }
+
+    aside nav ul {
+        flex-direction: column !important;
+        min-width: 0 !important;
+        gap: 0.75rem !important;
+    }
+
+    aside nav ul li {
+        width: 100% !important;
+        flex-shrink: 1 !important;
+    }
+
+    aside nav button, aside nav a {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+    }
+
+    .col-span-3, .col-span-4, .col-span-8, .col-span-9, .lg\:col-span-3, .lg\:col-span-9 {
+        width: 100% !important;
+    }
+
+    /* Fix Profile Card in Mobile */
+    .flex.flex-col.md\:flex-row.gap-12 {
+        gap: 1.5rem !important;
+    }
+
+    .w-48.h-48.md\:w-64.md\:h-64 {
+        width: 120px !important;
+        height: 120px !important;
+        margin: 0 auto !important;
+    }
+
+    /* Ensure all buttons stack vertically and are fully visible */
+    .flex.flex-col.gap-4, .space-y-4 {
+        width: 100% !important;
+    }
+
+    .glass.flex.items-center.gap-4.p-4.rounded-2xl {
+        width: 100% !important;
+        justify-content: flex-start !important;
+    }
+
+    /* Fix the specific case in the image where buttons are cut off */
+    .grid.grid-cols-2.gap-4 {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Mobile Menu Styles */
+#mobile-menu {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mobile-menu.hidden {
+    display: flex !important;
+    transform: translateX(100%);
+    pointer-events: none;
+}
+
+body.rtl #mobile-menu.hidden {
+    transform: translateX(-100%);
+}
+
+#mobile-menu:not(.hidden) {
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+/* Light Mode Support - Redefined for maximum impact */
+body.light {
+    --dark-bg: #fdfdfd;
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --surface: rgba(0, 0, 0, 0.02);
+}
+
+body.light .bg-mesh {
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 0, 170, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
+}
+
+body.light .text-white, 
+body.light h1, body.light h2, body.light h3, body.light h4, body.light h5, body.light h6,
+body.light .luxury-title,
+body.light span.text-white,
+body.light #summary-total,
+body.light #modal-total-amount,
+body.light #checkout-total { 
+    color: #050505 !important; 
+}
+
+body.light .text-gray-400, 
+body.light .text-gray-500,
+body.light .luxury-subtitle,
+body.light p.text-gray-500,
+body.light span.text-gray-400,
+body.light span.text-gray-500 {
+    color: #475569 !important;
+}
+
+body.light .glass,
+body.light .glass a,
+body.light .glass button,
+body.light a.glass,
+body.light button.glass {
+    color: #050505 !important;
+}
+
+body.light .glass i[data-lucide],
+body.light a.glass i[data-lucide],
+body.light button.glass i[data-lucide] {
+    color: #050505 !important;
+}
+
+body.light .glass {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.05);
+}
+
+/* Modals Overlay Fix */
+body.light .bg-dark-bg\/90, 
+body.light .bg-dark-bg\/95,
+body.light .bg-dark-bg\/80 {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+/* Modal Content Fixes */
+body.light #order-payment-modal .glass,
+body.light #order-tracking-modal .bg-dark-bg,
+body.light #checkout-modal .bg-dark-bg,
+body.light #order-success-modal .glass {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 40px 120px -20px rgba(0, 0, 0, 0.15) !important;
+}
+
+body.light #checkout-modal .bg-dark-bg,
+body.light #order-tracking-modal .bg-dark-bg {
+    background-color: #ffffff !important;
+}
+
+/* Custom Scrollbar for Modals in Light Mode */
+body.light #checkout-modal .overflow-y-auto::-webkit-scrollbar,
+body.light #order-tracking-modal .overflow-y-auto::-webkit-scrollbar {
+    width: 5px;
+}
+
+body.light #checkout-modal .overflow-y-auto::-webkit-scrollbar-track,
+body.light #order-tracking-modal .overflow-y-auto::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+body.light #checkout-modal .overflow-y-auto::-webkit-scrollbar-thumb,
+body.light #order-tracking-modal .overflow-y-auto::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+body.light #checkout-modal .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan);
+}
+
+body.light #checkout-modal input, 
+body.light #checkout-modal textarea {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: #050505 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+}
+
+body.light #checkout-modal input:focus, 
+body.light #checkout-modal textarea:focus {
+    border-color: var(--cyan) !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.08) !important;
+}
+
+body.light #checkout-items .glass,
+body.light #checkout-items .bg-white\/5 {
+    background: #f8fafc !important;
+    border-color: rgba(0, 0, 0, 0.03) !important;
+    border-radius: 1.5rem !important;
+}
+
+body.light #place-order-btn {
+    background: #050505 !important;
+    color: #ffffff !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #place-order-btn:hover {
+    background: var(--cyan) !important;
+    color: #000000 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px rgba(0, 240, 255, 0.3) !important;
+}
+
+body.light .border-white\/5,
+body.light .border-white\/10 {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light .bg-white\/5,
+body.light .bg-white\/10,
+body.light .bg-white\/5 i,
+body.light .bg-white\/10 i,
+body.light .bg-white\/5 span,
+body.light .bg-white\/10 span {
+    color: #050505 !important;
+}
+
+body.light .bg-white\/5 {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+body.light .bg-white\/10 {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body.light nav.glass {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light input, body.light textarea, body.light select {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #050505 !important;
+}
+
+body.light input::placeholder, body.light textarea::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important;
+}
+
+body.light #cart-items-list span,
+body.light #cart-items-list p,
+body.light #checkout-items span,
+body.light #checkout-items p,
+body.light #orders-list span,
+body.light #orders-list p {
+    color: #050505 !important;
+}
+
+body.light #cart-items-list .text-gray-500,
+body.light #checkout-items .text-gray-500,
+body.light #orders-list .text-gray-500 {
+    color: #64748b !important;
+}
+
+body.light #order-summary span.text-white {
+    color: #050505 !important;
+}
+
+body.light #order-summary .text-primary-cyan {
+    color: var(--cyan) !important;
+}
+
+body.light .theme-icon {
+    color: #050505 !important;
+}
+
+body.light #favorites-modal .glass,
+body.light #upload-modal .glass {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #favorites-modal h3,
+body.light #favorites-modal p,
+body.light #upload-modal h2,
+body.light #upload-modal label,
+body.light #upload-modal span:not(.text-primary-cyan):not(.text-primary-magenta) {
+    color: #050505 !important;
+}
+
+body.light #upload-modal .bg-black\/60 {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+body.light #upload-modal input,
+body.light #upload-modal textarea {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #050505 !important;
+}
+
+body.light #initialize-asset-btn {
+    background: #050505 !important;
+    color: #ffffff !important;
+}
+
+body.light #initialize-asset-btn:hover {
+    background: var(--cyan) !important;
+    color: #000000 !important;
+}
+
+body.light .group\/cta .bg-black\/60 {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+body.light .group\/cta h2,
+body.light .group\/cta p {
+    color: #050505 !important;
+}
+
+body.light #fav-badge,
+body.light #cart-badge {
+    border-color: #ffffff !important;
+}
+
+body.light #fav-list-container p {
+    color: #64748b !important;
+}
+
+body.light aside.glass,
+body.light aside .glass {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light aside h2,
+body.light aside h3,
+body.light aside p,
+body.light aside span:not(.text-primary-cyan):not(.text-primary-magenta):not(.text-primary-gold) {
+    color: #050505 !important;
+}
+
+body.light .nav-btn.bg-white\/5 {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+    color: #475569 !important;
+}
+
+body.light .nav-btn.bg-white\/5:hover {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    color: #050505 !important;
+}
+
+body.light .nav-btn.text-primary-cyan {
+    background-color: rgba(0, 240, 255, 0.1) !important;
+    border-color: rgba(0, 240, 255, 0.3) !important;
+    color: #008fa0 !important;
+}
+
+body.light table th {
+    color: #64748b !important;
+}
+
+body.light table td {
+    color: #050505 !important;
+    border-bottom-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light #upgrade-modal .glass {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #upgrade-modal h3,
+body.light #upgrade-modal p,
+body.light #upgrade-modal li {
+    color: #050505 !important;
+}
+
+body.light #upgrade-modal .bg-white\/5 {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light #tab-analytics .glass h3 {
+    color: #050505 !important;
+}
+
+body.light #finance-table-body tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light .user-role-text {
+    opacity: 1 !important;
+}
+
+body.light .glass::before {
+    opacity: 0.005;
+}
+
+body.light .btn-premium.glass {
+    color: #050505;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+body.light .bg-white.text-black {
+    background-color: #050505 !important;
+    color: #ffffff !important;
+}
+
+body.light .glass.hover\:bg-white\/10:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light #confirm-order-payment-btn {
+    background-color: #050505 !important;
+    color: #ffffff !important;
+}
+
+body.light #confirm-order-payment-btn:hover {
+    background-color: var(--cyan) !important;
+    color: #000000 !important;
+}
+
+body.light #place-order-btn {
+    box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2) !important;
+}
+
+body.light .shadow-white\/5 {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light .text-primary-cyan {
+    color: #008fa0 !important; /* Slightly darker cyan for better contrast on white */
+}
+
+body.light .text-primary-magenta {
+    color: #cc0088 !important; /* Slightly darker magenta for better contrast on white */
+}
+
+body.light .text-primary-gold {
+    color: #b8860b !important; /* Dark goldenrod for better contrast on white */
+}
+
+body.light #cart-badge {
+    background-color: #050505 !important;
+    color: #ffffff !important;
+    border-color: #ffffff !important;
+}
+
+body.light .btn-premium.glass:hover {
+    background: #ffffff;
+    border-color: var(--cyan);
+    box-shadow: 0 10px 30px -5px rgba(0, 240, 255, 0.2);
+}
+
+body.light .size-btn.glass, 
+body.light .color-btn.glass,
+body.light .glass.rounded-2xl.border.p-2.w-fit,
+body.light #product-description-container.glass,
+body.light #feedback-form.glass {
+    background: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+body.light .size-btn span,
+body.light .color-btn span,
+body.light #quantity-display,
+body.light #product-description,
+body.light #avg-rating-text {
+    color: #050505 !important;
+}
+
+body.light .size-btn:hover,
+body.light .color-btn:hover {
+    border-color: var(--cyan) !important;
+    background: rgba(0, 240, 255, 0.05) !important;
+}
+
+body.light .size-btn.bg-primary-cyan\/10,
+body.light .color-btn.bg-primary-cyan\/10 {
+    background-color: rgba(0, 240, 255, 0.15) !important;
+    border-color: var(--cyan) !important;
+}
+
+body.light #designer-card.glass {
+    background: #fdfaf5 !important; /* Elegant light cream background as per user image */
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light #designer-card h3 {
+    color: #050505 !important;
+}
+
+body.light #designer-card #designer-asset-count,
+body.light #designer-card #designer-avg-rating {
+    color: #050505 !important;
+}
+
+body.light #designer-modal .glass {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #designer-modal h2,
+body.light #designer-modal h3,
+body.light #designer-modal p,
+body.light #designer-modal span:not(.text-primary-cyan):not(.text-primary-magenta) {
+    color: #050505 !important;
+}
+
+body.light #checkout-modal h2,
+body.light #checkout-modal h3 {
+    color: #050505 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.02em !important;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.05);
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+body.light #checkout-modal #checkout-total,
+body.light #checkout-modal #modal-total-amount {
+    color: #050505 !important;
+    font-weight: 800 !important;
+}
+
+body.light #checkout-modal span:not(.text-primary-cyan):not(.text-primary-magenta):not(.text-gray-500):not(.text-gray-400) {
+    color: #050505 !important;
+}
+
+body.light #designer-modal .bg-dark-bg {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #feedback-comment {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #050505 !important;
+}
+
+body.light #submit-feedback-btn {
+    background: #050505 !important;
+    color: #ffffff !important;
+}
+
+body.light .star-btn i {
+    color: #cbd5e1 !important;
+}
+
+body.light .star-btn i.fill-primary-gold {
+    color: var(--gold) !important;
+}
+
+body.light .text-primary-cyan i[data-lucide="info"] {
+    color: var(--cyan) !important;
+}
+
+body.light .size-btn span.text-white,
+body.light .size-btn span.text-\[8px\],
+body.light .sidebar-scroll button span,
+body.light .sidebar-scroll a span,
+body.light #designer-portal-nav button span,
+body.light #designer-portal-nav a span,
+body.light #admin-portal-nav button span,
+body.light #admin-portal-nav a span {
+    color: #050505 !important;
+}
+
+body.light .sidebar-scroll button i,
+body.light .sidebar-scroll a i,
+body.light nav i[data-lucide],
+body.light nav a.font-bold {
+    color: #050505 !important;
+}
+
+/* --- Product Card Light Mode Improvements --- */
+body.light .product-card {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light .product-card:hover {
+    border-color: var(--cyan) !important;
+    box-shadow: 0 20px 40px -10px rgba(0, 240, 255, 0.15) !important;
+}
+
+body.light .product-card h3 {
+    color: #050505 !important;
+}
+
+body.light .product-card .text-gray-500 {
+    color: #64748b !important;
+}
+
+body.light .product-card .text-white\/50 {
+    color: #64748b !important;
+}
+
+body.light .product-card .bg-white\/5 {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light .product-card .glass {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    color: #050505 !important;
+}
+
+body.light .product-card .glass:hover {
+    background: #ffffff !important;
+}
+
+/* Image Overlay Fix in Light Mode */
+body.light .product-card .group-hover\:opacity-100 {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.95), transparent) !important;
+}
+
+body.light .product-card .group-hover\:opacity-100 p {
+    color: #050505 !important;
+}
+
+/* Badge Fix */
+body.light .bg-primary-cyan\/20 {
+    background-color: rgba(0, 240, 255, 0.1) !important;
+    color: #008fa0 !important;
+    border-color: rgba(0, 240, 255, 0.2) !important;
+}
+
+/* Button Fixes */
+body.light .product-card a.glass {
+    background: #f1f5f9 !important;
+    color: #050505 !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light .product-card a.glass:hover {
+    background: #e2e8f0 !important;
+}
+
+body.light .product-card .btn-premium.bg-white {
+    background-color: #050505 !important;
+    color: #ffffff !important;
+}
+
+body.light .product-card .btn-premium.bg-white:hover {
+    background-color: var(--cyan) !important;
+    color: #000000 !important;
+}
+
+/* Favorite button fix */
+body.light .product-card button.glass i[data-lucide="heart"] {
+    color: #050505 !important;
+}
+
+body.light .product-card button.glass i.fill-primary-magenta {
+    color: var(--magenta) !important;
+}
+
+/* --- Hero & Section Polish --- */
+body.light .bg-mesh {
+    opacity: 0.4; /* Slightly more visible mesh in light mode */
+}
+
+body.light .luxury-subtitle {
+    color: #475569 !important;
+}
+
+body.light .glass.bg-white\/5 {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light .glass.bg-white\/5 span {
+    color: #050505 !important;
+}
+
+/* Ticker Fix */
+body.light .fixed.top-16.md\:top-24.bg-primary-cyan\/10 {
+    background-color: rgba(0, 240, 255, 0.05) !important;
+    border-color: rgba(0, 240, 255, 0.1) !important;
+}
+
+body.light .animate-marquee span.text-white\/40 {
+    color: #94a3b8 !important;
+}
+
+/* Navigation Search Bar */
+body.light #main-search {
+    background: #f1f5f9 !important;
+    border-color: rgba(0, 0, 0, 0.05) !important;
+    color: #050505 !important;
+}
+
+body.light #main-search:focus {
+    background: #ffffff !important;
+    border-color: var(--cyan) !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.1) !important;
+}
+
+/* Footer & Global Elements */
+body.light footer.glass {
+    background: #ffffff !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light .border-t.border-white\/5 {
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Product Detail Page Specifics */
+body.light #product-origin-badge.glass {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #050505 !important;
+}
+
+body.light #gallery-nav button.glass {
+    background: rgba(255, 255, 255, 0.8) !important;
+    color: #050505 !important;
+}
+
+body.light #gallery-nav button.glass:hover {
+    background: var(--cyan) !important;
+    color: #000000 !important;
+}
+
+body.light #gallery-thumbnails .glass {
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #gallery-thumbnails .border-primary-cyan {
+    border-color: var(--cyan) !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+}
+
+body.light .luxury-subtitle.bg-primary-cyan\/10 {
+    background-color: rgba(0, 240, 255, 0.1) !important;
+    color: #008fa0 !important;
+}
+
+body.light #product-price.luxury-title {
+    color: #050505 !important;
+}
+
+body.light .w-full.h-px.bg-white\/5 {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Global Icon Fixes */
+body.light [data-lucide] {
+    color: inherit;
+}
+
+body.light .text-gray-500 [data-lucide],
+body.light .text-gray-400 [data-lucide] {
+    color: #64748b !important;
+}
+
+/* Toast Light Mode Fix */
+body.light #toast-container .glass {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #toast-container .bg-white\/5 {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light #toast-container span.text-white {
+    color: #050505 !important;
+}
+
+body.light nav a.font-bold:hover {
+    color: var(--cyan) !important;
+}
+
+body.light .sidebar-scroll button:hover span,
+body.light .sidebar-scroll a:hover span {
+    color: var(--cyan) !important;
+}
+
+body.light .size-btn span.text-gray-500 {
+    color: #64748b !important;
+}
+
+body.light .size-btn:hover,
+body.light .color-btn:hover {
+    border-color: var(--cyan) !important;
+}
+
+body.light .size-btn.bg-primary-cyan\/10,
+body.light .color-btn.bg-primary-cyan\/10 {
+    background-color: rgba(0, 240, 255, 0.15) !important;
+    border-color: var(--cyan) !important;
+}
+
+body.light #quantity-display {
+    color: #050505 !important;
+}
+
+body.light .btn-premium.glass span {
+    color: #050505 !important;
+}
+
+body.light .product-card .glass.py-2\.5,
+body.light .product-card a.glass.py-2\.5 {
+    color: #050505 !important;
+}
+
+body.light .product-card .btn-premium.bg-white {
+    background-color: #050505 !important;
+    color: #ffffff !important;
+}
+
+body.light i[data-lucide] {
+    color: currentColor;
+}
+
+body.light .text-primary-gold i[data-lucide] { color: var(--gold) !important; }
+body.light .text-primary-cyan i[data-lucide] { color: var(--cyan) !important; }
+body.light .text-primary-magenta i[data-lucide] { color: var(--magenta) !important; }
+
+/* Fix for AI Studio & AR Fitting buttons specifically */
+body.light .glass.rounded-2xl.md\:rounded-3xl.border-white\/5 span {
+    color: #050505 !important;
+}
+
+body.light .glass.rounded-2xl.md\:rounded-3xl.border-white\/5:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Fix for specific elements in light mode */
+body.light .bg-primary-cyan\/10 { background-color: rgba(0, 240, 255, 0.05); }
+body.light .bg-primary-magenta\/10 { background-color: rgba(255, 0, 170, 0.05); }
+body.light .bg-primary-gold\/10 { background-color: rgba(255, 215, 0, 0.05); }
+body.light .bg-white\/5 { background-color: rgba(0, 0, 0, 0.03) !important; }
+body.light .bg-white\/10 { background-color: rgba(0, 0, 0, 0.05) !important; }
+body.light .border-white\/5 { border-color: rgba(0, 0, 0, 0.08) !important; }
+body.light .border-white\/10 { border-color: rgba(0, 0, 0, 0.1) !important; }
+
+/* Footer & Section Gradients */
+body.light footer .bg-black\/40 {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+body.light section .from-black {
+    --tw-gradient-from: rgba(255, 255, 255, 0.9) !important;
+}
+
+body.light section .via-black\/40 {
+    --tw-gradient-to: rgba(255, 255, 255, 0.2) !important;
+}
+
+body.light .bg-black\/60 {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Luxury Subtitle fix */
+body.light .luxury-subtitle {
+    color: #475569 !important;
+    opacity: 1 !important;
+}
+
+/* Star Rating Fix */
+body.light .star-btn i[data-lucide="star"] {
+    color: #e2e8f0 !important; /* Very light gray for inactive stars */
+}
+
+body.light .star-btn i.fill-primary-gold {
+    color: var(--gold) !important;
+}
+
+body.light #feedback-comment {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    color: #050505 !important;
+}
+
+body.light #feedback-comment:focus {
+    background: #ffffff !important;
+    border-color: var(--cyan) !important;
+}
+
+body.light #submit-feedback-btn {
+    background: #050505 !important;
+    color: #ffffff !important;
+}
+
+body.light #submit-feedback-btn:hover {
+    background: var(--cyan) !important;
+    color: #000000 !important;
+}
+
+body.light #avg-rating-text {
+    color: #050505 !important;
+}
+
+/* Ticker Fix */
+body.light .fixed.top-16, body.light .fixed.top-24 {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+body.light .animate-marquee div span {
+    color: #475569 !important;
+}
+
+body.light .animate-marquee div .text-primary-cyan,
+body.light .animate-marquee div .text-primary-magenta,
+body.light .animate-marquee div .text-primary-gold {
+    opacity: 1 !important;
+}
+
+/* Global Portal Button Fix for Light Mode */
+body.light .glass.flex.items-center.gap-4.p-4.rounded-2xl.border-white\/5 span,
+body.light .glass.flex.items-center.gap-4.p-4.rounded-2xl.border-white\/5 i,
+body.light .glass.flex.items-center.gap-4.p-4.rounded-2xl span,
+body.light .glass.flex.items-center.gap-4.p-4.rounded-2xl i {
+    color: #050505 !important;
+}
+
+body.light .glass.flex.items-center.gap-4.p-4.rounded-2xl.border-white\/5:hover span {
+    color: var(--cyan) !important;
+}
+
+/* Specific fix for the Terminate Session / Logout button in portals */
+body.light .bg-red-500\/10.text-red-500 {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: #ef4444 !important;
+}
+
+body.light .bg-red-500\/10.text-red-500 span {
+    color: #ef4444 !important;
+}
+
+body.light #checkout-modal .glass {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 30px 100px -10px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.light #checkout-modal label,
+body.light #order-payment-modal label {
+    color: #64748b !important;
+    font-weight: 700 !important;
+}
+
+body.light #checkout-modal .text-primary-cyan,
+body.light #order-payment-modal .text-primary-cyan {
+    color: #00a0b0 !important;
+}
+
+body.light #checkout-modal .border-white\/5,
+body.light #checkout-modal .border-white\/10 {
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light #checkout-modal .bg-gradient-to-br {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light #checkout-modal .text-gray-400,
+body.light #checkout-modal .text-gray-500 {
+    color: #64748b !important;
+}
+
+body.light #checkout-modal input {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #050505 !important;
+}
+
+body.light #checkout-modal input:focus {
+    background: #ffffff !important;
+    border-color: var(--cyan) !important;
+}
+
+body.light #checkout-modal .bg-white\/5 {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+body.light #checkout-modal button.glass:hover {
+    background: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Specific fix for cart items text in light mode */
+body.light #cart-items-list span,
+body.light #cart-items-list p {
+    color: #050505 !important;
+}
+
+body.light #cart-items-list .text-primary-cyan {
+    color: var(--cyan) !important;
+}
+
+/* Designer Card Grayscale Fix */
+body.light .group:hover .grayscale-0 {
+    filter: grayscale(0) brightness(1.1);
+}
+
+/* Premium Select Fix */
+.premium-select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1.5rem center;
+    background-size: 1rem;
+    padding-right: 3.5rem !important;
+}
+
+body.light .premium-select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+}
+
+.premium-select option {
+    background: #0a0a0a;
+    color: white;
+    padding: 1rem;
+}
+
+body.light .premium-select option {
+    background: #fff;
+    color: #050505;
+}
+
+/* Sidebar Scroll for Admin/Designer Portals */
+.sidebar-scroll {
+    display: flex;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    gap: 0.75rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .sidebar-scroll {
+        flex-direction: column !important;
+        overflow-x: visible !important;
+        width: 100% !important;
+    }
+    
+    .sidebar-scroll button, 
+    .sidebar-scroll a {
+        width: 100% !important;
+        flex-shrink: 1 !important;
+    }
+}
+
+@media (min-width: 1025px) {
+    .sidebar-scroll {
+        flex-direction: column;
+        overflow-x: visible;
+    }
+}
