@@ -3,6 +3,8 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const pool = require('../config/db'); // Import the MySQL connection pool
 const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
@@ -174,15 +176,36 @@ transporter.verify(function (error, success) {
 });
 
 // Setup Multer for uploads
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '..', 'uploads'));
-    },
-    filename: (req, file, cb) => {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        cb(null, uniqueSuffix + path.extname(file.originalname));
-    }
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
+let storage;
+if (process.env.CLOUDINARY_CLOUD_NAME) {
+    storage = new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: {
+            folder: 'lumina_uploads',
+            allowed_formats: ['jpg', 'png', 'jpeg', 'webp', 'gif'],
+            transformation: [{ width: 1000, height: 1000, crop: 'limit' }]
+        }
+    });
+    console.log('Using Cloudinary Storage for uploads');
+} else {
+    storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, path.join(__dirname, '..', 'uploads'));
+        },
+        filename: (req, file, cb) => {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname));
+        }
+    });
+    console.log('Using Disk Storage for uploads (Local Development)');
+}
+
 const upload = multer({ 
     storage: storage,
     limits: { fileSize: 10 * 1024 * 1024 } // 10MB limit per file
@@ -636,7 +659,12 @@ router.patch('/auth/profile', upload.single('photo'), async (req, res) => {
     let connection;
     try {
         const { id, username, email, phone, address, bio } = req.body;
-        const photo = req.file ? `/uploads/${req.file.filename}` : null;
+        
+        let photo = null;
+        if (req.file) {
+            // Cloudinary returns the full URL in path, disk storage returns full local path
+            photo = req.file.path.startsWith('http') ? req.file.path : `/uploads/${req.file.filename}`;
+        }
 
         connection = await pool.getConnection();
 
@@ -647,12 +675,36 @@ router.patch('/auth/profile', upload.single('photo'), async (req, res) => {
         const currentUser = currentUsers[0];
 
         // Construct the update query dynamically
-        let updateFields = ['username = ?', 'email = ?', 'bio = ?', 'phone = ?', 'address = ?'];
-        let params = [username, email, bio || null, phone || null, address || null];
+        let updateFields = [];
+        let params = [];
 
+        if (username !== undefined) {
+            updateFields.push('username = ?');
+            params.push(username);
+        }
+        if (email !== undefined) {
+            updateFields.push('email = ?');
+            params.push(email);
+        }
+        if (bio !== undefined) {
+            updateFields.push('bio = ?');
+            params.push(bio);
+        }
+        if (phone !== undefined) {
+            updateFields.push('phone = ?');
+            params.push(phone);
+        }
+        if (address !== undefined) {
+            updateFields.push('address = ?');
+            params.push(address);
+        }
         if (photo) {
             updateFields.push('photo = ?');
             params.push(photo);
+        }
+
+        if (updateFields.length === 0) {
+            return res.json(currentUser);
         }
 
         let query = `UPDATE users SET ${updateFields.join(', ')} WHERE id = ?`;
@@ -841,22 +893,42 @@ router.post('/auth/profile/update', (req, res, next) => {
 
     let photoUrl = null;
     if (req.file) {
-        photoUrl = `/uploads/${req.file.filename}`;
+        photoUrl = req.file.path.startsWith('http') ? req.file.path : `/uploads/${req.file.filename}`;
     }
 
     let connection;
     try {
         connection = await pool.getConnection();
         
-        let query = 'UPDATE users SET username = ?, bio = ?, phone = ?, address = ?';
-        let params = [username || '', bio || '', phone || '', address || ''];
+        let updateFields = [];
+        let params = [];
 
+        if (username !== undefined) {
+            updateFields.push('username = ?');
+            params.push(username || '');
+        }
+        if (bio !== undefined) {
+            updateFields.push('bio = ?');
+            params.push(bio || '');
+        }
+        if (phone !== undefined) {
+            updateFields.push('phone = ?');
+            params.push(phone || '');
+        }
+        if (address !== undefined) {
+            updateFields.push('address = ?');
+            params.push(address || '');
+        }
         if (photoUrl) {
-            query += ', photo = ?';
+            updateFields.push('photo = ?');
             params.push(photoUrl);
         }
 
-        query += ' WHERE id = ?';
+        if (updateFields.length === 0) {
+            return res.json({ success: true, user: updatedUser[0] });
+        }
+
+        let query = `UPDATE users SET ${updateFields.join(', ')} WHERE id = ?`;
         params.push(id);
 
         const [result] = await connection.execute(query, params);
@@ -961,7 +1033,7 @@ router.post('/products', uploadMiddleware, async (req, res) => {
             return res.status(400).json({ error: 'At least one image is required' });
         }
 
-        const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+        const imageUrls = req.files.map(file => file.path.startsWith('http') ? file.path : `/uploads/${file.filename}`);
         const primaryImg = imageUrls[0];
         // Ensure we save all images in the 'images' column
         const imagesJson = JSON.stringify(imageUrls);

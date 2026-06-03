@@ -274,7 +274,7 @@ function renderDesignerSpotlightGrid(grid, designers) {
 
     grid.innerHTML = designers.map((d, i) => {
         const color = colors[i % colors.length];
-        const photo = d.photo ? (d.photo.startsWith('http') ? d.photo : baseUrl + d.photo) : `https://i.pravatar.cc/200?u=${d.email || d.username}`;
+        const photo = d.photo ? (d.photo.startsWith('http') ? d.photo : baseUrl + d.photo + '?t=' + Date.now()) : `https://i.pravatar.cc/200?u=${d.email || d.username}`;
         
         return `
         <div onclick="openDesignerProfileFromHome('${d.email || ''}', '${d.username || ''}')" class="glass p-10 rounded-[3rem] border-white/5 text-center group hover:border-${color}/40 transition-all duration-700 hover:-translate-y-4 relative overflow-hidden cursor-pointer">
@@ -535,7 +535,7 @@ function updateUserArea() {
 
     if (user) {
         const username = user.username || user.name || 'User';
-        const photoUrl = user.photo ? (user.photo.startsWith('http') ? user.photo : `${API_BASE.replace('/api', '')}${user.photo}`) : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100';
+        const photoUrl = user.photo ? (user.photo.startsWith('http') ? user.photo : `${API_BASE.replace('/api', '')}${user.photo}?t=${Date.now()}`) : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100';
         const dashboardLink = user.role === 'designer' ? 'designer-portal.html' : 'customer-dashboard.html';
 
         navUserArea.innerHTML = `
