@@ -142,6 +142,18 @@ async function initializeDatabase() {
                 payment_method VARCHAR(50),
                 transaction_type VARCHAR(50),
                 created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            )`,
+            `CREATE TABLE IF NOT EXISTS subscriptions (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT,
+                stripe_subscription_id VARCHAR(255),
+                stripe_customer_id VARCHAR(255),
+                plan_id VARCHAR(255),
+                status VARCHAR(50),
+                current_period_start DATETIME,
+                current_period_end DATETIME,
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             )`
         ];
 
@@ -188,6 +200,16 @@ async function initializeDatabase() {
             if (!cartColumnNames.includes('architect')) {
                 console.log('Adding architect column to cart_items...');
                 await connection.execute('ALTER TABLE cart_items ADD COLUMN architect VARCHAR(255)');
+            }
+
+            // --- Orders Migration ---
+            console.log('--- Checking for Missing Columns in Orders Table ---');
+            const [orderColumns] = await connection.execute('SHOW COLUMNS FROM orders');
+            const orderColumnNames = orderColumns.map(c => c.Field);
+
+            if (!orderColumnNames.includes('stripe_session_id')) {
+                console.log('Adding stripe_session_id column to orders...');
+                await connection.execute('ALTER TABLE orders ADD COLUMN stripe_session_id VARCHAR(255)');
             }
 
             console.log('--- Schema Migration Completed ---');
