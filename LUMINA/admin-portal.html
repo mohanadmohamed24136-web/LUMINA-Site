@@ -25,6 +25,7 @@
             return null;
         }
 
+        let currentAdminUser = null;
         async function verifyAdmin() {
             const userId = getCookie('userId');
             if (!userId) { window.location.href = 'login.html'; return; }
@@ -32,6 +33,7 @@
                 const response = await fetch(`${API_BASE}/auth/profile?id=${userId}`);
                 if (response.ok) {
                     const user = await response.json();
+                    currentAdminUser = user;
                     if (user.role !== 'admin') {
                         alert('Unauthorized Access: Admin Protocol Required');
                         window.location.href = 'index.html';
@@ -671,11 +673,15 @@
 
         async function deleteProduct(id) {
             if (!confirm('Execute decommissioning protocol for this asset?')) return;
+            if (!currentAdminUser) return;
             try {
-                const response = await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
+                const response = await fetch(`${API_BASE}/products/${id}?email=${currentAdminUser.email}`, { method: 'DELETE' });
                 if (response.ok) {
                     loadAdminProducts();
                     loadAdminOverview();
+                } else {
+                    const error = await response.json();
+                    alert(error.error || 'Failed to decommission asset');
                 }
             } catch (err) {
                 console.error('Delete Asset Error:', err);

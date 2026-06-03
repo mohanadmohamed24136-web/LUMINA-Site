@@ -706,9 +706,16 @@ async function fetchProducts() {
 
 async function deleteProduct(id) {
     if(!confirm(currentLang === 'ar' ? 'هل أنت متأكد من حذف هذا المنتج؟' : 'Are you sure you want to delete this product?')) return;
+    if (!currentUser) return;
     try {
-        const response = await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
-        if (response.ok) location.reload();
+        const response = await fetch(`${API_BASE}/products/${id}?email=${currentUser.email}`, { method: 'DELETE' });
+        if (response.ok) {
+            showToast(currentLang === 'ar' ? 'تم حذف المنتج بنجاح' : 'Product deleted successfully');
+            location.reload();
+        } else {
+            const error = await response.json();
+            showToast(error.error || (currentLang === 'ar' ? 'فشل الحذف' : 'Delete failed'), 'error');
+        }
     } catch (err) {
         console.error('Delete Error:', err);
     }
@@ -1881,17 +1888,23 @@ function closePaymentModal() {
 
 async function deleteProduct(productId) {
     if (!confirm('Are you sure you want to purge this asset from the grid?')) return;
+    if (!currentUser) return;
 
     try {
-        const response = await fetch(`${API_BASE}/products/${productId}`, {
+        const response = await fetch(`${API_BASE}/products/${productId}?email=${currentUser.email}`, {
             method: 'DELETE'
         });
 
         if (response.ok) {
             showToast(currentLang === 'ar' ? 'تم حذف المنتج بنجاح' : 'Asset Purged Successfully');
-            renderDesignerProducts();
+            if (typeof renderDesignerProducts === 'function') {
+                renderDesignerProducts();
+            } else {
+                location.reload();
+            }
         } else {
-            showToast(currentLang === 'ar' ? 'فشل حذف المنتج' : 'Failed to purge asset', 'error');
+            const error = await response.json();
+            showToast(error.error || (currentLang === 'ar' ? 'فشل حذف المنتج' : 'Failed to purge asset'), 'error');
         }
     } catch (err) {
         console.error('Delete error:', err);
@@ -2488,11 +2501,19 @@ async function clearCart() {
 
 async function deleteProduct(id) {
     if (!confirm('Are you sure you want to terminate this asset?')) return;
+    if (!currentUser) return;
     try {
-        const res = await fetch(`${API_BASE}/products/${id}`, { method: 'DELETE' });
+        const res = await fetch(`${API_BASE}/products/${id}?email=${currentUser.email}`, { method: 'DELETE' });
         if (res.ok) {
             showToast(currentLang === 'ar' ? 'تم حذف المنتج' : 'Asset Terminated', 'success');
-            renderDesignerInventory();
+            if (typeof renderDesignerInventory === 'function') {
+                renderDesignerInventory();
+            } else {
+                location.reload();
+            }
+        } else {
+            const error = await res.json();
+            showToast(error.error || (currentLang === 'ar' ? 'فشل الحذف' : 'Delete failed'), 'error');
         }
     } catch (err) {
         console.error('Delete Error:', err);

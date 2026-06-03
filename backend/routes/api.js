@@ -1225,6 +1225,37 @@ router.patch('/products/:id/sell', async (req, res) => {
     }
 });
 
+router.delete('/products/:id', async (req, res) => {
+    let connection;
+    try {
+        const { id } = req.params;
+        const { email } = req.query; // Expecting email for authorization
+        
+        connection = await pool.getConnection();
+        
+        // Check if product exists and who owns it
+        const [products] = await connection.execute('SELECT designerEmail FROM products WHERE id = ?', [id]);
+        if (products.length === 0) return res.status(404).json({ error: 'Product not found' });
+        
+        const product = products[0];
+        
+        // Authorization check: Must be owner or admin
+        const isAdmin = MASTER_ADMINS.includes(email?.toLowerCase());
+        if (!isAdmin && product.designerEmail !== email) {
+            return res.status(403).json({ error: 'Unauthorized: You can only delete your own architectural assets.' });
+        }
+
+        await connection.execute('DELETE FROM products WHERE id = ?', [id]);
+        console.log(`Product ${id} purged from grid by ${email}`);
+        res.json({ success: true, message: 'Asset purged successfully' });
+    } catch (err) {
+        console.error('Delete Product Error:', err);
+        res.status(500).json({ error: err.message });
+    } finally {
+        if (connection) connection.release();
+    }
+});
+
 // --- NOTIFICATIONS & AI CONTACT ---
 router.post('/notifications/ai-contact', async (req, res) => {
     let connection;
