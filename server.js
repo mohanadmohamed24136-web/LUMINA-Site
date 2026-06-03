@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-require('dotenv').config({ path: path.join(__dirname, 'backend/.env') });
+require('dotenv').config(); // Automatically looks for .env in root
 
 const apiRoutes = require('./backend/routes/api');
 
