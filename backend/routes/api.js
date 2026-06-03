@@ -110,6 +110,10 @@ async function initializeDatabase() {
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 user_email VARCHAR(255),
                 product_id INT,
+                name VARCHAR(255),
+                price DECIMAL(10, 2),
+                img VARCHAR(255),
+                architect VARCHAR(255),
                 quantity INT DEFAULT 1,
                 selected_size VARCHAR(50),
                 selected_color VARCHAR(50),
@@ -163,6 +167,29 @@ async function initializeDatabase() {
                 console.log('Adding stripe_customer_id column...');
                 await connection.execute('ALTER TABLE users ADD COLUMN stripe_customer_id VARCHAR(255)');
             }
+
+            // --- Cart Items Migration ---
+            console.log('--- Checking for Missing Columns in Cart Items Table ---');
+            const [cartColumns] = await connection.execute('SHOW COLUMNS FROM cart_items');
+            const cartColumnNames = cartColumns.map(c => c.Field);
+
+            if (!cartColumnNames.includes('name')) {
+                console.log('Adding name column to cart_items...');
+                await connection.execute('ALTER TABLE cart_items ADD COLUMN name VARCHAR(255)');
+            }
+            if (!cartColumnNames.includes('price')) {
+                console.log('Adding price column to cart_items...');
+                await connection.execute('ALTER TABLE cart_items ADD COLUMN price DECIMAL(10, 2)');
+            }
+            if (!cartColumnNames.includes('img')) {
+                console.log('Adding img column to cart_items...');
+                await connection.execute('ALTER TABLE cart_items ADD COLUMN img VARCHAR(255)');
+            }
+            if (!cartColumnNames.includes('architect')) {
+                console.log('Adding architect column to cart_items...');
+                await connection.execute('ALTER TABLE cart_items ADD COLUMN architect VARCHAR(255)');
+            }
+
             console.log('--- Schema Migration Completed ---');
         } catch (migrationErr) {
             console.error('Schema Migration Error:', migrationErr);
