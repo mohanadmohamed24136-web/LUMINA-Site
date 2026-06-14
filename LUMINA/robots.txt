@@ -1,0 +1,8 @@
+# LUMINA Protocol Robots.txt
+# https://lumina-site-chi.vercel.app/
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://lumina-site-chi.vercel.app/sitemap.xml
