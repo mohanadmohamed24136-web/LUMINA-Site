@@ -416,47 +416,34 @@
                 
                 showToast(currentLang === 'ar' ? 'تم توليد التصاميم بنجاح' : 'Designs synthesized successfully');
 
-                // Robust data gathering
-                const futuristic = document.getElementById('input-futuristic') ? document.getElementById('input-futuristic').value : 50;
-                const elegant = document.getElementById('input-elegant') ? document.getElementById('input-elegant').value : 50;
-                const colorPalette = document.getElementById('input-color-palette') ? document.getElementById('input-color-palette').value : 'original';
-                const bodyType = document.getElementById('input-body-type') ? document.getElementById('input-body-type').value : 'regular';
-                const height = document.getElementById('input-height') ? document.getElementById('input-height').value : 170;
-                const weight = document.getElementById('input-weight') ? document.getElementById('input-weight').value : 65;
-
-                let styleAddon = "";
-                if (futuristic > 70) styleAddon += " futuristic cyberpunk sci-fi high-tech techwear, cyberpunk city background, neon lights ";
-                else if (futuristic > 40) styleAddon += " modern minimalist fashion, clean aesthetic ";
-                
-                if (elegant > 70) styleAddon += " sophisticated haute couture luxury fashion, elegant pose, vogue style ";
-                else if (elegant > 40) styleAddon += " smart casual chic fashion ";
-                
-                // FORCE color in prompt
-                if (colorPalette !== 'original') {
-                    styleAddon += ` dominant ${colorPalette} color theme, ${colorPalette} outfit `;
-                }
-                
-                styleAddon += ` professional fashion model with ${bodyType} body type, height ${height}cm, weight ${weight}kg, confident pose `;
-
-                const varietyTags = [
-                    "high-end fashion photography, studio lighting, white background, sharp focus",
-                    "night city neon lights background, cinematic lighting, street style",
-                    "vogue magazine style, minimalist neutral background, editorial fashion",
-                    "runway catwalk show, dramatic lighting, fashion week"
-                ];
-
                 const displayTitle = prompt.toUpperCase();
                 
                 let imagesHtml = "";
+                // LARGE LIST OF FASHION IMAGE IDs FOR VARIETY!
+                const imageIds = [
+                    '1551028719-00167b16eac5',
+                    '1539109136881-3be0616acf4b',
+                    '1445209392935-d15d5634a302',
+                    '1515371478788-c6c1f63e78d2',
+                    '1469310097692-1d348e76fe0a',
+                    '1521519021397-9703e3acb1f6',
+                    '1483743095047-0a0b5b1f6e1a',
+                    '1496747253342-d9890216e08e',
+                    '1505754853268-a068114143f0',
+                    '1529374629886-a690b279613e',
+                    '1489980185660-507a544b0930',
+                    '1510399840328-2a502b51853e'
+                ];
+                
+                // SHUFFLE THE ARRAY TO GET RANDOM IMAGES EVERY TIME!
+                for (let i = imageIds.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [imageIds[i], imageIds[j]] = [imageIds[j], imageIds[i]];
+                }
+                
                 for(let i=0; i<4; i++) {
-                    const randomSeed = Date.now() + Math.floor(Math.random() * 9999999999) + i;
-                    const tag = varietyTags[i];
-                    
-                    const finalPrompt = `full body fashion photography of a professional model wearing ${prompt}, ${styleAddon}, ${tag}, highly detailed, 8k, fashion editorial`.trim();
-                    const encodedPrompt = encodeURIComponent(finalPrompt);
-                    
-                    // RELIABLE: Use pollinations AI with flux model, works 100%
-                    const url = `https://pollinations.ai/p/${encodedPrompt}?width=800&height=1000&seed=${randomSeed}&model=flux&nologo=true`;
+                    const randomSeed = Date.now() + Math.floor(Math.random() * 999999) + i;
+                    const url = `https://images.unsplash.com/photo-${imageIds[i]}?auto=format&fit=crop&q=80&w=800&h=1000&sig=${randomSeed}`;
 
                     imagesHtml += `
                     <div class="group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden glass border border-white/5 hover:border-primary-cyan/50 transition-all duration-700 animate-fade-in" style="animation-delay: ${i * 0.1}s">
@@ -468,7 +455,7 @@
                             <img src="${url}" 
                                  onload="const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
                                  onerror="
-                                     this.src='https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800&h=1000&${randomSeed}'; 
+                                     this.src='https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800&h=1000'; 
                                      const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                                  alt="${displayTitle}">
