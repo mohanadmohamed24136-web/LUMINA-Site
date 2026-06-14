@@ -186,23 +186,23 @@
                                 <p class="luxury-title text-xl md:text-2xl text-white" data-i18n="select_fit">Select Your Fit</p>
                             </div>
                             <div id="product-sizes" class="grid grid-cols-5 gap-3 md:gap-4">
-                                <button onclick="selectSize('S')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('S')" data-size="S" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">S</span>
                                     <span id="size-s-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('M')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('M')" data-size="M" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">M</span>
                                     <span id="size-m-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('L')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('L')" data-size="L" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">L</span>
                                     <span id="size-l-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('XL')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('XL')" data-size="XL" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">XL</span>
                                     <span id="size-xl-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('XXL')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('XXL')" data-size="XXL" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">XXL</span>
                                     <span id="size-xxl-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
@@ -644,20 +644,6 @@
             if (display) display.textContent = currentQuantity;
         }
 
-        function selectColor(color) {
-            selectedColor = color;
-            document.querySelectorAll('.color-btn').forEach(btn => {
-                btn.classList.remove('border-primary-cyan', 'bg-primary-cyan/10');
-                btn.classList.add('border-white/10');
-            });
-            const activeBtn = Array.from(document.querySelectorAll('.color-btn')).find(btn => 
-                btn.getAttribute('data-color') === color
-            );
-            if (activeBtn) {
-                activeBtn.classList.add('border-primary-cyan', 'bg-primary-cyan/10');
-                activeBtn.classList.remove('border-white/10');
-            }
-        }
 
         function setRating(rating) {
             currentRating = rating;
@@ -793,16 +779,16 @@
 
         function selectSize(size) {
             selectedSize = size;
+            console.log('Protocol: Selecting Size ->', size);
             // Update UI
             document.querySelectorAll('.size-btn').forEach(btn => {
                 btn.classList.remove('border-primary-cyan', 'bg-primary-cyan/10');
                 btn.classList.add('border-white/10');
             });
             
-            // Match by the first span which contains the letter (S, M, L, etc)
+            // Match by data-size attribute!
             const activeBtn = Array.from(document.querySelectorAll('.size-btn')).find(btn => {
-                const sizeText = btn.querySelector('span:first-child').textContent.trim();
-                return sizeText === size;
+                return btn.getAttribute('data-size') === size;
             });
             
             if (activeBtn) {
