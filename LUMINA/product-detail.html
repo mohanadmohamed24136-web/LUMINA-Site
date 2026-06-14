@@ -138,40 +138,28 @@
             </section>
 
             <!-- Product Info -->
-            <section class="space-y-10 md:space-y-14 py-4 md:py-6 animate-fade-in" style="animation-delay: 0.2s">
-                <div class="space-y-6">
-                    <div class="flex flex-wrap items-center gap-4">
-                        <span class="luxury-subtitle px-5 py-2 bg-primary-cyan/10 text-primary-cyan rounded-full border border-primary-cyan/20">Lumina Elite</span>
-                        <div class="flex items-center gap-1.5 text-primary-gold glass px-4 py-2 rounded-full border-white/5">
+            <section class="space-y-8 md:space-y-12 py-4 md:py-6 animate-fade-in" style="animation-delay: 0.2s">
+                <div class="space-y-4">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="luxury-subtitle px-4 py-1.5 bg-primary-cyan/10 text-primary-cyan rounded-full border border-primary-cyan/20">Lumina Elite</span>
+                        <div class="flex items-center gap-1.5 text-primary-gold glass px-3 py-1.5 rounded-full border-white/5">
                             <i data-lucide="star" class="fill-current w-4 h-4"></i>
                             <span class="luxury-subtitle text-primary-gold">4.9 Ranking</span>
                         </div>
                     </div>
-                    <h1 id="product-name" class="luxury-title text-5xl md:text-8xl text-white">Loading...</h1>
-                    <div class="flex items-center gap-6">
-                        <!-- Designer Card (As per user request) -->
-                        <div id="designer-card" onclick="openDesignerProfile()" class="glass p-6 md:p-8 rounded-[2.5rem] border border-white/5 flex flex-col items-center text-center gap-4 cursor-pointer group/designer hover:border-primary-cyan/30 transition-all min-w-[200px] hidden relative z-20">
-                            <div id="designer-photo-container" class="w-24 h-24 rounded-full bg-gradient-to-br from-primary-cyan to-primary-magenta p-1 shadow-lg shadow-primary-cyan/20 overflow-hidden">
-                                <img id="designer-photo" src="" class="w-full h-full rounded-full object-cover border-2 border-dark-bg group-hover/designer:scale-110 transition-transform">
-                            </div>
-                            <div class="space-y-1">
-                                <h3 id="product-architect" class="luxury-title text-xl md:text-2xl text-white group-hover:text-primary-cyan transition-colors">Designer Name</h3>
-                                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-primary-gold">Neural Architect</p>
-                            </div>
-                            <div class="w-full h-px bg-white/5"></div>
-                            <div class="flex justify-between w-full gap-4">
-                                <div class="flex flex-col items-center">
-                                    <span id="designer-asset-count" class="text-xl font-black text-white">0</span>
-                                    <span class="text-[8px] font-black uppercase tracking-widest text-gray-500">Assets</span>
-                                </div>
-                                <div class="flex flex-col items-center">
-                                    <span id="designer-avg-rating" class="text-xl font-black text-white">5.0</span>
-                                    <span class="text-[8px] font-black uppercase tracking-widest text-gray-500">Rating</span>
-                                </div>
-                            </div>
+                    <!-- Fix product name font size to fit properly -->
+                    <h1 id="product-name" class="luxury-title text-3xl md:text-5xl lg:text-6xl text-white leading-tight">Loading...</h1>
+                    <!-- Clean up designer display to be inline instead of a big card -->
+                    <div class="flex items-center gap-4">
+                        <div id="designer-photo-container-inline" class="w-12 h-12 rounded-full bg-gradient-to-br from-primary-cyan to-primary-magenta p-0.5 shadow-lg shadow-primary-cyan/20 overflow-hidden hidden">
+                            <img id="designer-photo-inline" src="" class="w-full h-full rounded-full object-cover border-2 border-dark-bg">
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">Designer</p>
+                            <h3 id="product-architect" class="luxury-title text-lg md:text-xl text-white">Designer Name</h3>
                         </div>
                     </div>
-                    <p id="product-price" class="luxury-title text-4xl md:text-6xl text-white/90">$0.00</p>
+                    <p id="product-price" class="luxury-title text-3xl md:text-4xl text-white/90">$0.00</p>
                 </div>
 
                 <!-- Architecture fit and selection -->
@@ -954,12 +942,11 @@
                     document.getElementById('product-price').textContent = `$${parseFloat(product.price).toFixed(2)}`;
                     document.getElementById('product-architect').textContent = product.architect;
 
-                    // NEW: Load Designer Data & Card
+                    // NEW: Load Designer Data & Inline Display
                     try {
                         const designersRes = await fetch(`${API_BASE}/designers`);
                         if (designersRes.ok) {
                             const designers = await designersRes.json();
-                            // Search by username, name, or email to be safe
                             const designer = designers.find(d => 
                                 d.username === product.architect || 
                                 d.name === product.architect || 
@@ -967,60 +954,24 @@
                             );
                             
                             if (designer) {
-                                currentDesignerData = designer; // Store for modal
+                                currentDesignerData = designer;
                                 
-                                const card = document.getElementById('designer-card');
-                                const photoEl = document.getElementById('designer-photo');
+                                const photoContainer = document.getElementById('designer-photo-container-inline');
+                                const photoEl = document.getElementById('designer-photo-inline');
                                 const nameEl = document.getElementById('product-architect');
-                                const assetCountEl = document.getElementById('designer-asset-count');
-                                const ratingEl = document.getElementById('designer-avg-rating');
                                 
-                                if (card && photoEl) {
+                                if (photoContainer && photoEl) {
                                     const baseUrl = API_BASE.replace('/api', '');
-                                    photoEl.src = designer.photo ? (designer.photo.startsWith('http') ? designer.photo : baseUrl + designer.photo) : `https://i.pravatar.cc/200?u=${designer.email || designer.username}`;
+                                    photoEl.src = designer.photo 
+                                        ? (designer.photo.startsWith('http') ? designer.photo : baseUrl + designer.photo) 
+                                        : `https://i.pravatar.cc/200?u=${designer.email || designer.username}`;
                                     
-                                    if (nameEl) nameEl.textContent = designer.username || designer.name || product.architect;
-                                    if (assetCountEl) assetCountEl.textContent = designer.asset_count || 0;
-                                    
-                                    // Fetch all products to get average rating for this designer's items
-                                    const allProductsRes = await fetch(`${API_BASE}/products`);
-                                    if (allProductsRes.ok) {
-                                        const allProducts = await allProductsRes.json();
-                                        const designerProducts = allProducts.filter(p => p.architect === designer.username || p.architect === designer.name || p.designerEmail === designer.email);
-                                        const totalRating = designerProducts.reduce((acc, p) => acc + (parseFloat(p.avg_rating) || 5.0), 0);
-                                        const avgRating = designerProducts.length > 0 ? (totalRating / designerProducts.length).toFixed(1) : '5.0';
-                                        if (ratingEl) ratingEl.textContent = avgRating;
-                                    }
-
-                                    card.classList.remove('hidden');
-                                    card.classList.add('flex');
-                                }
-                            } else {
-                                console.warn('Designer not found in /designers list, using product fallback');
-                                // Fallback: Show basic card even if not in top designers list
-                                const card = document.getElementById('designer-card');
-                                if (card) {
-                                    document.getElementById('product-architect').textContent = product.architect;
-                                    card.classList.remove('hidden');
-                                    card.classList.add('flex');
-                                    
-                                    // Try to fetch this specific designer by email if possible
-                                    if (product.designerEmail) {
-                                        const profileRes = await fetch(`${API_BASE}/auth/profile?email=${product.designerEmail}`);
-                                        if (profileRes.ok) {
-                                            currentDesignerData = await profileRes.json();
-                                            const photoEl = document.getElementById('designer-photo');
-                                            if (photoEl && currentDesignerData.photo) {
-                                                const baseUrl = API_BASE.replace('/api', '');
-                                                photoEl.src = currentDesignerData.photo.startsWith('http') ? currentDesignerData.photo : baseUrl + currentDesignerData.photo;
-                                            }
-                                        }
-                                    }
+                                    photoContainer.classList.remove('hidden');
                                 }
                             }
                         }
-                    } catch (e) {
-                        console.error('Error loading designer data:', e);
+                    } catch (designerErr) {
+                        console.warn('Could not load designer data:', designerErr);
                     }
 
                     // Check if AI product
