@@ -425,37 +425,39 @@
                 const weight = document.getElementById('input-weight') ? document.getElementById('input-weight').value : 65;
 
                 let styleAddon = "";
-                if (futuristic > 50) styleAddon += " futuristic high-tech cyberpunk techwear style ";
-                if (elegant > 50) styleAddon += " sophisticated haute couture luxury fashion ";
+                if (futuristic > 70) styleAddon += " futuristic cyberpunk sci-fi high-tech techwear, cyberpunk city background, neon lights ";
+                else if (futuristic > 40) styleAddon += " modern minimalist fashion, clean aesthetic ";
+                
+                if (elegant > 70) styleAddon += " sophisticated haute couture luxury fashion, elegant pose, vogue style ";
+                else if (elegant > 40) styleAddon += " smart casual chic fashion ";
                 
                 // FORCE color in prompt
                 if (colorPalette !== 'original') {
-                    styleAddon += ` ${colorPalette} color theme ${colorPalette} dress `;
+                    styleAddon += ` dominant ${colorPalette} color theme, ${colorPalette} outfit `;
                 }
                 
-                styleAddon += ` professional model fitting for ${bodyType} body type `;
+                styleAddon += ` professional fashion model with ${bodyType} body type, height ${height}cm, weight ${weight}kg, confident pose `;
 
                 const varietyTags = [
-                    "fashion photography studio lighting",
-                    "night city neon background",
-                    "vogue style minimalist background",
-                    "cinematic runway catwalk"
+                    "high-end fashion photography, studio lighting, white background, sharp focus",
+                    "night city neon lights background, cinematic lighting, street style",
+                    "vogue magazine style, minimalist neutral background, editorial fashion",
+                    "runway catwalk show, dramatic lighting, fashion week"
                 ];
 
                 const displayTitle = prompt.toUpperCase();
                 
                 let imagesHtml = "";
                 for(let i=0; i<4; i++) {
-                    const randomSeed = Math.floor(Math.random() * 2000000000) + i;
+                    const randomSeed = Math.floor(Math.random() * 1000000000000) + Date.now() + i;
                     const tag = varietyTags[i];
                     
-                    // ULTIMATE PROMPT: Pure descriptive without any system tags to avoid fallback
-                    const finalPrompt = `photo of a model wearing ${prompt}, ${styleAddon}, ${tag}, detailed background, 8k fashion photography`.trim();
+                    // IMPROVED PROMPT: More specific and detailed
+                    const finalPrompt = `full body photo of a professional fashion model wearing ${prompt}, ${styleAddon}, ${tag}, detailed clothing texture, 8k, ultra realistic, high detail, fashion photography, --ar 4:5 --style raw`.trim();
                     const encodedPrompt = encodeURIComponent(finalPrompt);
                     
-                    // NEW STABLE PATH: Using direct pollinations.ai/p/ with ONLY essential params
-                    // This forces the latest Flux model directly
-                    const url = `https://pollinations.ai/p/${encodedPrompt}?width=800&height=1000&seed=${randomSeed}&model=flux`;
+                    // BETTER API: Use pollinations with flux and more randomness, add nologo
+                    const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=1000&seed=${randomSeed}&model=flux&nologo=true&enhance=true`;
 
                     imagesHtml += `
                     <div class="group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden glass border border-white/5 hover:border-primary-cyan/50 transition-all duration-700 animate-fade-in" style="animation-delay: ${i * 0.1}s">
