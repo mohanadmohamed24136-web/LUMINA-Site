@@ -419,31 +419,18 @@
                 const displayTitle = prompt.toUpperCase();
                 
                 let imagesHtml = "";
-                // LARGE LIST OF FASHION IMAGE IDs FOR VARIETY!
-                const imageIds = [
-                    '1551028719-00167b16eac5',
-                    '1539109136881-3be0616acf4b',
-                    '1445209392935-d15d5634a302',
-                    '1515371478788-c6c1f63e78d2',
-                    '1469310097692-1d348e76fe0a',
-                    '1521519021397-9703e3acb1f6',
-                    '1483743095047-0a0b5b1f6e1a',
-                    '1496747253342-d9890216e08e',
-                    '1505754853268-a068114143f0',
-                    '1529374629886-a690b279613e',
-                    '1489980185660-507a544b0930',
-                    '1510399840328-2a502b51853e'
-                ];
-                
-                // SHUFFLE THE ARRAY TO GET RANDOM IMAGES EVERY TIME!
-                for (let i = imageIds.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [imageIds[i], imageIds[j]] = [imageIds[j], imageIds[i]];
-                }
+                const models = ['flux', 'flux-realism', 'flux-anime', 'flux-3d', 'sdxl'];
                 
                 for(let i=0; i<4; i++) {
-                    const randomSeed = Date.now() + Math.floor(Math.random() * 999999) + i;
-                    const url = `https://images.unsplash.com/photo-${imageIds[i]}?auto=format&fit=crop&q=80&w=800&h=1000&sig=${randomSeed}`;
+                    const randomSeed = Date.now() + Math.floor(Math.random() * 999999999) + i;
+                    const model = models[Math.floor(Math.random() * models.length)];
+                    
+                    // ENHANCED PROMPT FOR BETTER AI GENERATION!
+                    const aiPrompt = `fashion photography, professional model wearing ${prompt}, high detail, 8k, ultra realistic, editorial, stylish, --ar 4:5 --v 6`;
+                    const encodedPrompt = encodeURIComponent(aiPrompt);
+                    
+                    // USE POLLINATIONS AI WITH CORRECT PARAMETERS!
+                    const url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=1000&seed=${randomSeed}&model=${model}&nologo=true&enhance=true&cache=false`;
 
                     imagesHtml += `
                     <div class="group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden glass border border-white/5 hover:border-primary-cyan/50 transition-all duration-700 animate-fade-in" style="animation-delay: ${i * 0.1}s">
@@ -455,7 +442,9 @@
                             <img src="${url}" 
                                  onload="const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
                                  onerror="
-                                     this.src='https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800&h=1000'; 
+                                     // FALLBACK TO UNSPLASH IF AI FAILS!
+                                     const fallbackIds = ['1551028719-00167b16eac5','1539109136881-3be0616acf4b','1445209392935-d15d5634a302','1515371478788-c6c1f63e78d2'];
+                                     this.src='https://images.unsplash.com/photo-' + fallbackIds[${i}] + '?auto=format&fit=crop&q=80&w=800&h=1000'; 
                                      const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                                  alt="${displayTitle}">
@@ -465,7 +454,7 @@
                             <div class="absolute bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8 space-y-2 md:space-y-4 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-primary-cyan">Variant ${i + 1} | ID: ${randomSeed % 10000}</p>
+                                        <p class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em] text-primary-cyan">Variant ${i + 1} | Model: ${model}</p>
                                         <h3 class="text-sm md:text-xl font-black tracking-tighter uppercase truncate max-w-[120px] md:max-w-none">${displayTitle}</h3>
                                     </div>
                                     <button onclick="window.open('${url}')" class="w-8 h-8 md:w-12 md:h-12 glass rounded-full flex items-center justify-center hover:bg-primary-cyan hover:text-black transition-all">
