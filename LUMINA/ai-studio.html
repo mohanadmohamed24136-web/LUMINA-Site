@@ -3,10 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Studio | LUMINA</title>
+    <title>AI Studio | LUMINA - Generate AI Fashion Designs</title>
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="AI Studio | LUMINA - Generate AI Fashion Designs">
+    <meta name="description" content="Create unique AI-generated fashion designs with LUMINA's Neural Studio. Transform your ideas into wearable art with our advanced AI synthesis technology.">
+    <meta name="keywords" content="AI fashion generator, design clothing AI, AI studio, neural design, LUMINA AI, fashion design tool, AI designer">
+    <meta name="author" content="LUMINA Protocol">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lumina-site-chi.vercel.app/ai-studio.html">
+    <meta property="og:title" content="AI Studio | LUMINA - Generate AI Fashion Designs">
+    <meta property="og:description" content="Create unique AI-generated fashion designs with LUMINA's Neural Studio. Transform your ideas into wearable art with our advanced AI synthesis technology.">
+    <meta property="og:image" content="https://lumina-site-chi.vercel.app/assets/images/og-image.png">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://lumina-site-chi.vercel.app/ai-studio.html">
+    <meta name="twitter:title" content="AI Studio | LUMINA - Generate AI Fashion Designs">
+    <meta name="twitter:description" content="Create unique AI-generated fashion designs with LUMINA's Neural Studio. Transform your ideas into wearable art with our advanced AI synthesis technology.">
+    <meta name="twitter:image" content="https://lumina-site-chi.vercel.app/assets/images/og-image.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+    
+    <!-- Performance Optimizations: Preconnect -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://image.pollinations.ai" crossorigin>
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Preload -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"></noscript>
+    <!-- Lucide Icons: Defer -->
+    <script src="https://unpkg.com/lucide@latest" defer></script>
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
     <script>
         // Check authentication via cookies
@@ -442,12 +479,14 @@
                             <img src="${url}" 
                                  onload="const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
                                  onerror="
-                                     // FALLBACK TO UNSPLASH IF AI FAILS!
+                                     // FALLBACK TO UNSPLASH IF AI FAILS
                                      const fallbackIds = ['1551028719-00167b16eac5','1539109136881-3be0616acf4b','1445209392935-d15d5634a302','1515371478788-c6c1f63e78d2'];
                                      this.src='https://images.unsplash.com/photo-' + fallbackIds[${i}] + '?auto=format&fit=crop&q=80&w=800&h=1000'; 
                                      const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
-                                 alt="${displayTitle}">
+                                 alt="${displayTitle} - Variant ${i+1}"
+                                 loading="lazy"
+                                 decoding="async">
                             
                             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                             
