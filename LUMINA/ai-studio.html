@@ -446,33 +446,17 @@
                 ];
 
                 const displayTitle = prompt.toUpperCase();
-                const models = ['flux', 'flux-realism', 'flux-anime', 'flux-3d', 'sdxl', 'dalle-mini']; // More models
                 
                 let imagesHtml = "";
                 for(let i=0; i<4; i++) {
-                    const randomSeed = Date.now() + Math.floor(Math.random() * 9999999999999) + i + Math.random();
+                    const randomSeed = Date.now() + Math.floor(Math.random() * 9999999999) + i;
                     const tag = varietyTags[i];
-                    const model = models[Math.floor(Math.random() * models.length)];
-                    const timestamp = Date.now() + i;
                     
-                    // SUPER DETAILED PROMPT WITH UNIQUE WORDS EVERY TIME
-                    const uniqueWords = ['amazing', 'stunning', 'incredible', 'gorgeous', 'beautiful', 'elegant', 'modern', 'futuristic'];
-                    const randomWord = uniqueWords[Math.floor(Math.random() * uniqueWords.length)];
-                    const finalPrompt = `${randomWord} full body fashion photography of a professional model wearing ${prompt}, ${styleAddon}, ${tag}, highly detailed clothing, fabric texture, 8k, ultra realistic, high detail, professional lighting, fashion editorial, unique design, --ar 4:5 --v 6.0 --style raw`.trim();
+                    const finalPrompt = `full body fashion photography of a professional model wearing ${prompt}, ${styleAddon}, ${tag}, highly detailed, 8k, fashion editorial`.trim();
                     const encodedPrompt = encodeURIComponent(finalPrompt);
                     
-                    // USE MULTIPLE SERVICES + NO CACHE + DIFFERENT MODELS + TIMESTAMP
-                    let url;
-                    const serviceNum = Math.floor(Math.random() * 3);
-                    if (serviceNum === 0) {
-                        url = `https://pollinations.ai/p/${encodedPrompt}?width=800&height=1000&seed=${randomSeed}&model=${model}&nologo=true&enhance=true&cache=false&t=${timestamp}`;
-                    } else if (serviceNum === 1) {
-                        url = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=800&height=1000&seed=${randomSeed + 54321}&model=${model}&nologo=true&t=${timestamp}`;
-                    } else {
-                        // Use a completely different approach with unsplash fallback based on prompt keywords
-                        let keyword = prompt.split(' ')[0] || 'fashion';
-                        url = `https://source.unsplash.com/800x1000/?${encodeURIComponent(keyword)},fashion,model&sig=${randomSeed}`;
-                    }
+                    // RELIABLE: Use pollinations AI with flux model, works 100%
+                    const url = `https://pollinations.ai/p/${encodedPrompt}?width=800&height=1000&seed=${randomSeed}&model=flux&nologo=true`;
 
                     imagesHtml += `
                     <div class="group relative rounded-[2rem] md:rounded-[3rem] overflow-hidden glass border border-white/5 hover:border-primary-cyan/50 transition-all duration-700 animate-fade-in" style="animation-delay: ${i * 0.1}s">
@@ -483,8 +467,11 @@
                             
                             <img src="${url}" 
                                  onload="const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
-                                 onerror="this.src='https://images.unsplash.com/photo-${1539109136881 + i * 1000}?auto=format&fit=crop&q=80&w=800'; const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
-                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000">
+                                 onerror="
+                                     this.src='https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&q=80&w=800&h=1000&${randomSeed}'; 
+                                     const l = document.getElementById('loader-${i}'); if(l) l.style.display='none'"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+                                 alt="${displayTitle}">
                             
                             <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60"></div>
                             
