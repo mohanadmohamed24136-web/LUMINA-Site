@@ -784,10 +784,11 @@
                 btn.classList.add('border-white/10');
             });
             
-            // Find button by data-color attribute
-            const activeBtn = Array.from(colorButtons).find(btn => 
-                btn.getAttribute('data-color').trim() === color.trim()
-            );
+            // Find button by data-color attribute with null check
+            const activeBtn = Array.from(colorButtons).find(btn => {
+                const btnColor = btn.getAttribute('data-color');
+                return btnColor && btnColor.trim() === color.trim();
+            });
             
             if (activeBtn) {
                 activeBtn.classList.add('border-primary-cyan', 'bg-primary-cyan/10');
