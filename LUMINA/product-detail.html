@@ -3,32 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Primary Meta Tags -->
-    <title>LUXURY PRODUCT DETAILS | LUMINA AI-Powered Marketplace</title>
-    <meta name="title" content="LUXURY PRODUCT DETAILS | LUMINA AI-Powered Marketplace">
-    <meta name="description" content="Explore exclusive luxury fashion products, digital designs, and architectural assets. Discover premium collections from top creators on LUMINA, the AI-powered digital marketplace.">
-    <meta name="keywords" content="luxury fashion, digital products, architectural designs, premium fashion, digital marketplace">
-    <meta name="author" content="LUMINA Protocol">
-    <meta name="robots" content="index, follow">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://lumina-site-chi.vercel.app/product-detail.html">
-    <meta property="og:title" content="LUXURY PRODUCT DETAILS | LUMINA AI-Powered Marketplace">
-    <meta property="og:description" content="Explore exclusive luxury fashion products, digital designs, and architectural assets. Discover premium collections from top creators on LUMINA.">
-    <meta property="og:image" content="https://lumina-site-chi.vercel.app/assets/images/og-image.png">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://lumina-site-chi.vercel.app/product-detail.html">
-    <meta name="twitter:title" content="LUXURY PRODUCT DETAILS | LUMINA AI-Powered Marketplace">
-    <meta name="twitter:description" content="Explore exclusive luxury fashion products, digital designs, and architectural assets. Discover premium collections from top creators on LUMINA.">
-    <meta name="twitter:image" content="https://lumina-site-chi.vercel.app/assets/images/og-image.png">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
-    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
-    
+    <title>Cyber-Silk Evening Gown | LUMINA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -36,22 +11,8 @@
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { colors: { primary: { cyan: "#00F0FF", magenta: "#FF00AA", gold: "#FFD700" }, dark: { bg: "#050505", card: "rgba(20, 20, 20, 0.7)", border: "rgba(255, 255, 255, 0.1)" } } }
+            theme: { extend: { colors: { primary: { cyan: "#00F0FF", magenta: "#FF00AA", gold: "#FFD700" }, dark: { bg: "#050505", card: "rgba(20, 20, 20, 0.7)", border: "rgba(255, 255, 255, 0.1)" } } } }
         }
-    </script>
-    
-    <!-- Schema.org Product Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "LUMINA Product Details",
-        "description": "Explore exclusive luxury fashion products, digital designs, and architectural assets. Discover premium collections from top creators on LUMINA.",
-        "publisher": {
-            "@type": "Organization",
-            "name": "LUMINA Protocol"
-        }
-    }
     </script>
 </head>
 <body class="dark overflow-x-hidden">
@@ -180,29 +141,29 @@
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
                         <!-- Left Side: Sizes -->
-                        <div id="size-selection-container" class="space-y-6 md:space-y-8">
+                        <div class="space-y-6 md:space-y-8">
                             <div class="space-y-2">
                                 <h3 class="luxury-subtitle" data-i18n="architecture">Architecture</h3>
                                 <p class="luxury-title text-xl md:text-2xl text-white" data-i18n="select_fit">Select Your Fit</p>
                             </div>
                             <div id="product-sizes" class="grid grid-cols-5 gap-3 md:gap-4">
-                                <button onclick="selectSize('S')" data-size="S" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('S')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">S</span>
                                     <span id="size-s-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('M')" data-size="M" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('M')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">M</span>
                                     <span id="size-m-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('L')" data-size="L" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('L')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">L</span>
                                     <span id="size-l-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('XL')" data-size="XL" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('XL')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">XL</span>
                                     <span id="size-xl-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
-                                <button onclick="selectSize('XXL')" data-size="XXL" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
+                                <button onclick="selectSize('XXL')" class="size-btn group/size relative flex flex-col items-center justify-center p-4 md:p-6 rounded-2xl md:rounded-3xl glass border border-white/5 hover:border-primary-cyan/50 transition-all">
                                     <span class="text-xs md:text-sm font-black mb-1 text-white">XXL</span>
                                     <span id="size-xxl-value" class="text-[8px] font-bold text-gray-500 uppercase group-hover/size:text-primary-cyan transition-colors">-</span>
                                 </button>
@@ -793,16 +754,16 @@
 
         function selectSize(size) {
             selectedSize = size;
-            console.log('Protocol: Selecting Size ->', size);
             // Update UI
             document.querySelectorAll('.size-btn').forEach(btn => {
                 btn.classList.remove('border-primary-cyan', 'bg-primary-cyan/10');
                 btn.classList.add('border-white/10');
             });
             
-            // Match by data-size attribute
+            // Match by the first span which contains the letter (S, M, L, etc)
             const activeBtn = Array.from(document.querySelectorAll('.size-btn')).find(btn => {
-                return btn.getAttribute('data-size') === size;
+                const sizeText = btn.querySelector('span:first-child').textContent.trim();
+                return sizeText === size;
             });
             
             if (activeBtn) {
@@ -823,11 +784,10 @@
                 btn.classList.add('border-white/10');
             });
             
-            // Find button by data-color attribute with null check
-            const activeBtn = Array.from(colorButtons).find(btn => {
-                const btnColor = btn.getAttribute('data-color');
-                return btnColor && btnColor.trim() === color.trim();
-            });
+            // Find button by data-color attribute
+            const activeBtn = Array.from(colorButtons).find(btn => 
+                btn.getAttribute('data-color').trim() === color.trim()
+            );
             
             if (activeBtn) {
                 activeBtn.classList.add('border-primary-cyan', 'bg-primary-cyan/10');
